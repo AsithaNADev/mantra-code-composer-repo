@@ -1,0 +1,81 @@
+version: '3.7'
+
+services:
+      
+  api-gateway:
+    image: asankamadhawa/mantracode-bank-api-gateway:latest    
+    ports:
+      - "8765:8765"
+    networks:
+      - mantracode-bank-network
+    depends_on:
+      - naming-server   
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+      
+  transaction-service:
+    image: asankamadhawa/mantracode-bank-transaction-service:latest    
+    ports:
+      - "8100:8100"
+    networks:
+      - mantracode-bank-network
+    depends_on:
+      - naming-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+      
+  loan-service:
+    image: asankamadhawa/mantracode-bank-loan-service:latest 
+    ports:
+      - "8200:8200"
+    networks:
+      - mantracode-bank-network
+    depends_on:
+      - naming-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+            
+  customer-service:
+    image: asankamadhawa/mantracode-bank-customer-service:latest    
+    ports:
+      - "8300:8300"
+    networks:
+      - mantracode-bank-network
+    depends_on:
+      - naming-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+            
+  user-service:
+    image: asankamadhawa/mantracode-bank-user-service:latest    
+    ports:
+      - "8000:8000"
+    networks:
+      - mantracode-bank-network
+    depends_on:
+      - naming-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+      
+  naming-server:
+    image: asankamadhawa/mantracode-bank-naming-server:latest   
+    ports:
+      - "8761:8761"
+    networks:
+      - mantracode-bank-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+                  
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
+    ports:
+      - "9412:9412"
+    networks:
+      - mantracode-bank-network
+    restart: always #Restart if there is a problem starting up
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+
+networks:
+  mantracode-bank-network:
