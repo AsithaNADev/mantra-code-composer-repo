@@ -77,5 +77,36 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" 
 
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: transaction  # Default database (can be used for transactions)
+      MYSQL_USER: appdev
+      MYSQL_PASSWORD: appdev
+      MYSQL_MULTIPLE_DATABASES: "user customer loan"
+      MYSQL_USER_USER: appdev
+      MYSQL_PASSWORD_USER: appdev
+      MYSQL_USER_CUSTOMER: appdev
+      MYSQL_PASSWORD_CUSTOMER: appdev
+      MYSQL_USER_LOAN: appdev
+      MYSQL_PASSWORD_LOAN: appdev
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mantracode-bank-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
 networks:
   mantracode-bank-network:
+
+volumes:
+  mysql_data:
