@@ -84,7 +84,14 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: transaction  # Default database (can be used for transactions)
       MYSQL_USER: appdev
-      MYSQL_PASSWORD: appdev     
+      MYSQL_PASSWORD: appdev   
+      MYSQL_MULTIPLE_DATABASES: "user customer loan"
+      MYSQL_USER_USER: appdev
+      MYSQL_PASSWORD_USER: appdev
+      MYSQL_USER_CUSTOMER: appdev
+      MYSQL_PASSWORD_CUSTOMER: appdev
+      MYSQL_USER_LOAN: appdev
+      MYSQL_PASSWORD_LOAN: appdev  
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
