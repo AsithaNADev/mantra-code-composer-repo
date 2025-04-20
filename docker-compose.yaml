@@ -87,7 +87,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: transaction  # Default database (can be used for transactions)
+      MYSQL_DATABASE: dbx  # Default database (can be used for transactions)
       MYSQL_USER: appdev
       MYSQL_PASSWORD: appdev         
     volumes:
