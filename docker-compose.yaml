@@ -21,6 +21,10 @@ services:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
+    volumes:
+      - ./transaction-files:/app/files:Z  # :Z for SELinux context
+    environment:
+      - FILE_UPLOAD_PERMISSIONS=755
       
   loan-service:
     image: asankamadhawa/mantracode-bank-loan-service:latest 
