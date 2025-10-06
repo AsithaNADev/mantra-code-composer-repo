@@ -22,9 +22,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" 
     volumes:
-      - ./transaction-files:/app/files:Z  # :Z for SELinux context
+      - ./jasper-reports:/app/reports:rw
+      - ./temp-files:/tmp:rw
     environment:
-      - FILE_UPLOAD_PERMISSIONS=755
+      - JAVA_OPTS=-Djava.io.tmpdir=/tmp
       
   loan-service:
     image: asankamadhawa/mantracode-bank-loan-service:latest 
