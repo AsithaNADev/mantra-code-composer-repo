@@ -21,11 +21,18 @@ services:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
-    volumes:
-      - ./jasper-reports:/app/reports:rw
-      - ./temp-files:/tmp:rw
+    # mem_limit: 1024m  # Increased to 1GB
     environment:
-      - JAVA_OPTS=-Djava.io.tmpdir=/tmp
+      - JAVA_TOOL_OPTIONS=-Djava.awt.headless=true -XX:MaxMetaspaceSize=150M -XX:ReservedCodeCacheSize=100M -Xmx500M -Xss512k -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions
+      - JAVA_OPTS=-Djava.awt.headless=true
+      - SPRING_JAVA_OPTS=-Djava.awt.headless=true
+      - BPL_JVM_HEAD_ROOM=10
+      - BPL_JVM_LOADED_CLASS_COUNT=35
+      - BPL_JVM_THREAD_COUNT=
+      - FONTCONFIG_PATH=/etc/fonts
+      - FONTCONFIG_FILE=/etc/fonts/fonts.conf
+      - _JAVA_OPTIONS=-Djava.awt.headless=true -Dnet.sf.jasperreports.awt.ignore.missing.font=true
+    
       
   loan-service:
     image: asankamadhawa/mantracode-bank-loan-service:latest 
