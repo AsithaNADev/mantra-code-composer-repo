@@ -10,13 +10,6 @@ services:
       - naming-server   
     extra_hosts:
       - "host.docker.internal:host-gateway" 
-    environment:
-      - JAVA_TOOL_OPTIONS=-Xmx384m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=50m
-      - BPL_JVM_HEAD_ROOM=5
-    deploy:
-      resources:
-        limits:
-          memory: 512M
       
   transaction-service:
     image: asankamadhawa/mantracode-bank-transaction-service:latest    
@@ -39,10 +32,6 @@ services:
       - FONTCONFIG_PATH=/etc/fonts
       - FONTCONFIG_FILE=/etc/fonts/fonts.conf
       - _JAVA_OPTIONS=-Djava.awt.headless=true -Dnet.sf.jasperreports.awt.ignore.missing.font=true
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     
       
   loan-service:
@@ -54,14 +43,7 @@ services:
     depends_on:
       - naming-server
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - JAVA_TOOL_OPTIONS=-Xmx384m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=50m
-      - BPL_JVM_HEAD_ROOM=5
-    deploy:
-      resources:
-        limits:
-          memory: 512M
+      - "host.docker.internal:host-gateway" 
             
   customer-service:
     image: asankamadhawa/mantracode-bank-customer-service:latest    
@@ -73,13 +55,6 @@ services:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
-    environment:
-      - JAVA_TOOL_OPTIONS=-Xmx384m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=50m
-      - BPL_JVM_HEAD_ROOM=5
-    deploy:
-      resources:
-        limits:
-          memory: 512M
             
   user-service:
     image: asankamadhawa/mantracode-bank-user-service:latest    
@@ -90,14 +65,7 @@ services:
     depends_on:
       - naming-server
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - JAVA_TOOL_OPTIONS=-Xmx384m -XX:MaxMetaspaceSize=100m -XX:ReservedCodeCacheSize=50m
-      - BPL_JVM_HEAD_ROOM=5
-    deploy:
-      resources:
-        limits:
-          memory: 512M 
+      - "host.docker.internal:host-gateway" 
       
   naming-server:
     image: asankamadhawa/mantracode-bank-naming-server:latest   
@@ -106,18 +74,11 @@ services:
     networks:
       - mantracode-bank-network
     extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - JAVA_TOOL_OPTIONS=-Xmx256m -XX:MaxMetaspaceSize=80m -XX:ReservedCodeCacheSize=40m
-      - BPL_JVM_HEAD_ROOM=5
-    deploy:
-      resources:
-        limits:
-          memory: 384M 
+      - "host.docker.internal:host-gateway" 
                   
   zipkin-server:
     image: openzipkin/zipkin:2.23
-    # mem_limit: 300m
+    mem_limit: 300m
     ports:
       - "9412:9412"
     networks:
@@ -125,12 +86,6 @@ services:
     restart: always #Restart if there is a problem starting up
     extra_hosts:
       - "host.docker.internal:host-gateway" 
-    environment:
-      - JAVA_OPTS=-Xmx128m
-    deploy:
-      resources:
-        limits:
-          memory: 256M
 
   mysql:
     image: mysql:8.0
@@ -159,10 +114,6 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    deploy:
-      resources:
-        limits:
-          memory: 512M
 
 networks:
   mantracode-bank-network:
