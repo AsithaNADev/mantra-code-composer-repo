@@ -10,6 +10,8 @@ services:
       - naming-server   
     extra_hosts:
       - "host.docker.internal:host-gateway" 
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx512m -Xms256m -XX:+UseG1GC -XX:MaxRAMPercentage=75.0
       
   transaction-service:
     image: asankamadhawa/mantracode-bank-transaction-service:latest    
@@ -43,7 +45,16 @@ services:
     depends_on:
       - naming-server
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      - "host.docker.internal:host-gateway"
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx512m -Xms256m -XX:+UseG1GC -XX:MaxRAMPercentage=75.0 -Djava.awt.headless=true
+      - JAVA_OPTS=-Djava.awt.headless=true
+    deploy:
+      resources:
+        limits:
+          memory: 800M
+        reservations:
+          memory: 512M 
             
   customer-service:
     image: asankamadhawa/mantracode-bank-customer-service:latest    
@@ -55,6 +66,9 @@ services:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx512m -Xms256m -XX:+UseG1GC -XX:MaxRAMPercentage=75.0 -Djava.awt.headless=true
+      - JAVA_OPTS=-Djava.awt.headless=true
             
   user-service:
     image: asankamadhawa/mantracode-bank-user-service:latest    
@@ -65,7 +79,10 @@ services:
     depends_on:
       - naming-server
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      - "host.docker.internal:host-gateway"
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx512m -Xms256m -XX:+UseG1GC -XX:MaxRAMPercentage=75.0 -Djava.awt.headless=true
+      - JAVA_OPTS=-Djava.awt.headless=true 
       
   naming-server:
     image: asankamadhawa/mantracode-bank-naming-server:latest   
@@ -74,7 +91,9 @@ services:
     networks:
       - mantracode-bank-network
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
+      - "host.docker.internal:host-gateway"
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xmx256m -Xms128m -XX:+UseG1GC -XX:MaxRAMPercentage=75.0 
                   
   zipkin-server:
     image: openzipkin/zipkin:2.23
