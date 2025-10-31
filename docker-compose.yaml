@@ -117,7 +117,7 @@ services:
                   
   zipkin-server:
     image: openzipkin/zipkin:2.23
-    mem_limit: 300m
+    # mem_limit: 300m
     ports:
       - "9412:9412"
     networks:
