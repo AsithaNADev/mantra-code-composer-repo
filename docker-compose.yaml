@@ -1,22 +1,22 @@
 services:
       
   api-gateway:
-    image: asankamadhawa/mantracode-bank-api-gateway:latest    
+    image: asankamadhawa/mantraiq-sankhya-naming-server:latest   
     ports:
       - "8765:8765"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     depends_on:
       - naming-server   
     extra_hosts:
       - "host.docker.internal:host-gateway" 
       
   transaction-service:
-    image: asankamadhawa/mantracode-bank-transaction-service:latest    
+    image: asankamadhawa/mantraiq-sankhya-transaction-service:latest    
     ports:
       - "8100:8100"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     depends_on:
       - naming-server
     extra_hosts:
@@ -35,44 +35,44 @@ services:
     
       
   loan-service:
-    image: asankamadhawa/mantracode-bank-loan-service:latest 
+    image: asankamadhawa/mantraiq-sankhya-loan-service:latest 
     ports:
       - "8200:8200"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     depends_on:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
             
   customer-service:
-    image: asankamadhawa/mantracode-bank-customer-service:latest    
+    image: asankamadhawa/mantraiq-sankhya-customer-service:latest    
     ports:
       - "8300:8300"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     depends_on:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
             
   user-service:
-    image: asankamadhawa/mantracode-bank-user-service:latest    
+    image: asankamadhawa/mantraiq-sankhya-user-service:latest    
     ports:
       - "8000:8000"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     depends_on:
       - naming-server
     extra_hosts:
       - "host.docker.internal:host-gateway" 
       
   naming-server:
-    image: asankamadhawa/mantracode-bank-naming-server:latest   
+    image: asankamadhawa/mantraiq-sankhya-naming-server:latest   
     ports:
       - "8761:8761"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     extra_hosts:
       - "host.docker.internal:host-gateway" 
                   
@@ -82,41 +82,13 @@ services:
     ports:
       - "9412:9412"
     networks:
-      - mantracode-bank-network
+      - mantra_iq-bank-network
     restart: always #Restart if there is a problem starting up
     extra_hosts:
-      - "host.docker.internal:host-gateway" 
-
-  mysql:
-    image: mysql:8.0
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: transaction  # Default database (can be used for transactions)
-      MYSQL_USER: appdev
-      MYSQL_PASSWORD: appdev   
-      MYSQL_MULTIPLE_DATABASES: "user customer loan"
-      MYSQL_USER_USER: appdev
-      MYSQL_PASSWORD_USER: appdev
-      MYSQL_USER_CUSTOMER: appdev
-      MYSQL_PASSWORD_CUSTOMER: appdev
-      MYSQL_USER_LOAN: appdev
-      MYSQL_PASSWORD_LOAN: appdev  
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - mantracode-bank-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+      - "host.docker.internal:host-gateway"   
 
 networks:
-  mantracode-bank-network:
+  mantra_iq-bank-network:
 
 volumes:
   mysql_data:
